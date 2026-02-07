@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KM Reforço & Apoio - Reforço Escolar em Manaus</title>
+    <meta name="description" content="Reforço escolar do 1º ao 5º ano em Manaus. Professores qualificados, ambiente acolhedor e atendimento especializado.">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    },
+                    colors: {
+                        'azul-escolar': '#1e40af',
+                        'verde-escolar': '#10b981',
+                        'amarelo-escolar': '#f59e0b',
+                        'vermelho-escolar': '#dc2626'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1920&q=80');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Mobile: background scroll normal */
+        @media (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+            }
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.40);
+            z-index: -1;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        .sombra-suave {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sombra-media {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Padrão de caderno pautado */
+        .caderno-pautado {
+            background-image: 
+                repeating-linear-gradient(
+                    transparent,
+                    transparent 29px,
+                    #e5e7eb 29px,
+                    #e5e7eb 30px
+                );
+            background-color: white;
+        }
+        
+        /* Borda de caderno */
+        .borda-caderno {
+            border-left: 3px solid #ef4444;
+            padding-left: 20px;
+        }
+        
+        /* Quadro negro */
+        .quadro-negro {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            border: 8px solid #92400e;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        /* Giz */
+        .texto-giz {
+            color: #f3f4f6;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        
+        /* Papel de caderno */
+        .papel-caderno {
+            background: #fffef7;
+            border: 1px solid #d1d5db;
+        }
+        
+        /* Animações de flutuação */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+        
+        @keyframes float-slow {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(-5deg);
+            }
+        }
+        
+        @keyframes float-reverse {
+            0%, 100% {
+                transform: translateY(-10px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(10px) rotate(3deg);
+            }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .float-slow {
+            animation: float-slow 4s ease-in-out infinite;
+        }
+        
+        .float-reverse {
+            animation: float-reverse 3.5s ease-in-out infinite;
+        }
+        
+        /* Chat responsivo */
+        @media (max-width: 640px) {
+            #chatWindow {
+                width: calc(100vw - 2rem);
+                right: 1rem;
+                bottom: 5rem;
+            }
+            
+            #chatButton {
+                width: 56px;
+                height: 56px;
+            }
+        }
+        
+        /* Tela de Carregamento */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e40af 0%, #10b981 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        #loadingScreen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: bounce 1s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .loading-bar {
+            width: 200px;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .loading-bar-fill {
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes loading {
+            0% {
+                width: 0%;
+            }
+            50% {
+                width: 100%;
+            }
+            100% {
+                width: 0%;
+            }
+        }
+        
+        .loading-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .loading-icon {
+            font-size: 30px;
+            animation: float-icon 2s ease-in-out infinite;
+        }
+        
+        .loading-icon:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .loading-icon:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .loading-icon:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        .loading-icon:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+        
+        @keyframes float-icon {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(10deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    
+    <!-- Tela de Carregamento -->
+    <div id="loadingScreen">
+        <div class="loading-logo">
+            <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=200&q=80" alt="Logo" class="w-20 h-20 object-cover rounded-lg">
+        </div>
+        <div class="loading-text">KM Reforço & Apoio</div>
+        <div class="loading-bar">
+            <div class="loading-bar-fill"></div>
+        </div>
+        <p class="text-white text-sm opacity-75">Carregando...</p>
+        <div class="loading-icons">
+            <span class="loading-icon">📚</span>
+            <span class="loading-icon">✏️</span>
+            <span class="loading-icon">🎯</span>
+            <span class="loading-icon">⭐</span>
+        </div>
+    </div>
+    
+    <!-- Cabeçalho/Navegação -->
+    <header class="bg-white sombra-suave sticky top-0 z-50 border-b-4 border-azul-escolar">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="bg-azul-escolar p-2 rounded-lg overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=100&q=80" alt="Logo KM Reforço" class="w-12 h-12 object-cover rounded">
+                    </div>
+                    <div>
+                        <h1 class="text-xl md:text-2xl font-bold text-azul-escolar">KM Reforço & Apoio</h1>
+                        <p class="text-xs md:text-sm text-gray-600">📚 Reforço Escolar - 1º ao 5º ano</p>
+                    </div>
+                </div>
+                
+                <!-- Menu Desktop -->
+                <nav class="hidden md:flex gap-6 items-center">
+                    <a href="#inicio" class="text-gray-700 hover:text-azul-escolar font-semibold border-b-2 border-transparent hover:border-azul-escolar pb-1">Início</a>
+                    <a href="#sobre" class="text-gray-700 hover:text-azul-escolar font-semibold border-b-2 border-transparent hover:border-azul-escolar pb-1">Sobre</a>
+                    <a href="#servicos" class="text-gray-700 hover:text-azul-escolar font-semibold border-b-2 border-transparent hover:border-azul-escolar pb-1">Serviços</a>
+                    <a href="#depoimentos" class="text-gray-700 hover:text-azul-escolar font-semibold border-b-2 border-transparent hover:border-azul-escolar pb-1">Depoimentos</a>
+                    <a href="contato.html" class="bg-azul-escolar text-white px-6 py-2 rounded-lg hover:bg-blue-800 border-2 border-azul-escolar">
+                        📞 Contato
+                    </a>
+                </nav>
+                
+                <!-- Botão Menu Mobile -->
+                <button id="mobileMenuBtn" class="md:hidden text-azul-escolar p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Menu Mobile -->
+            <nav id="mobileMenu" class="hidden md:hidden mt-4 pb-4 space-y-3">
+                <a href="#inicio" class="block text-gray-700 hover:text-azul-escolar font-semibold py-2 px-4 rounded-lg hover:bg-blue-50">Início</a>
+                <a href="#sobre" class="block text-gray-700 hover:text-azul-escolar font-semibold py-2 px-4 rounded-lg hover:bg-blue-50">Sobre</a>
+                <a href="#servicos" class="block text-gray-700 hover:text-azul-escolar font-semibold py-2 px-4 rounded-lg hover:bg-blue-50">Serviços</a>
+                <a href="#depoimentos" class="block text-gray-700 hover:text-azul-escolar font-semibold py-2 px-4 rounded-lg hover:bg-blue-50">Depoimentos</a>
+                <a href="contato.html" class="block bg-azul-escolar text-white text-center py-2 px-4 rounded-lg hover:bg-blue-800 font-semibold">
+                    📞 Contato
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    
+    <!-- Seção Principal -->
+    <section id="inicio" class="py-16 relative overflow-hidden">
+        <!-- Imagem de fundo realista de escola -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1920&q=80" 
+                 alt="Sala de aula escolar" 
+                 class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-white/10"></div>
+        </div>
+        
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                
+                <div class="papel-caderno p-8 rounded-2xl sombra-media border-4 border-azul-escolar bg-white/95">
+                    <div class="borda-caderno">
+                        <!-- Badge -->
+                        <div class="inline-flex items-center gap-2 bg-amarelo-escolar text-gray-900 px-5 py-2 rounded-full text-sm font-bold mb-6 border-2 border-gray-900 sombra-suave">
+                            <span class="text-xl">✏️</span>
+                            <span>Educação de Qualidade</span>
+                        </div>
+                        
+                        <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                            Reforço Escolar que Faz a Diferença
+                        </h2>
+                        
+                        <p class="text-lg text-gray-800 mb-8 leading-relaxed font-medium">
+                            Ajudamos seu filho a superar dificuldades escolares com metodologia comprovada, 
+                            professores qualificados e ambiente acolhedor.
+                        </p>
+                        
+                        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                            <a href="https://wa.me/5592860294424" target="_blank" class="flex items-center justify-center gap-2 bg-azul-escolar text-white px-8 py-4 rounded-lg text-center font-bold hover:bg-blue-800 border-2 border-azul-escolar sombra-suave">
+                                <span class="text-xl">📅</span>
+                                <span>Agende uma Aula Grátis</span>
+                            </a>
+                            <a href="https://wa.me/5592860294424" target="_blank" class="flex items-center justify-center gap-2 bg-verde-escolar text-white px-8 py-4 rounded-lg text-center font-bold hover:bg-green-700 border-2 border-verde-escolar sombra-suave">
+                                <span class="text-xl">💬</span>
+                                <span>WhatsApp</span>
+                            </a>
+                        </div>
+                        
+                        <!-- Estatísticas -->
+                        <div class="grid grid-cols-3 gap-4 pt-6 border-t-4 border-azul-escolar">
+                            <div class="text-center bg-blue-50 p-3 rounded-lg border-2 border-azul-escolar">
+                                <div class="text-3xl font-bold text-azul-escolar">5+</div>
+                                <div class="text-xs text-gray-700 font-bold">Anos</div>
+                            </div>
+                            <div class="text-center bg-green-50 p-3 rounded-lg border-2 border-verde-escolar">
+                                <div class="text-3xl font-bold text-verde-escolar">100+</div>
+                                <div class="text-xs text-gray-700 font-bold">Alunos</div>
+                            </div>
+                            <div class="text-center bg-yellow-50 p-3 rounded-lg border-2 border-amarelo-escolar">
+                                <div class="text-3xl font-bold text-amarelo-escolar">95%</div>
+                                <div class="text-xs text-gray-700 font-bold">Satisfação</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <!-- Imagem principal com moldura escolar -->
+                    <div class="relative">
+                        <div class="border-8 border-white rounded-2xl overflow-hidden sombra-media transform rotate-2">
+                            <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=800&q=80" 
+                                 alt="Crianças estudando em sala de aula colorida" 
+                                 class="w-full h-[400px] object-cover">
+                        </div>
+                        
+                        <!-- Elementos decorativos escolares com animação -->
+                        <div class="absolute -top-6 -right-6 bg-amarelo-escolar p-5 rounded-full border-4 border-white sombra-media transform -rotate-12 float-animation">
+                            <span class="text-4xl">✏️</span>
+                        </div>
+                        <div class="absolute -bottom-6 -left-6 bg-verde-escolar p-5 rounded-full border-4 border-white sombra-media transform rotate-12 float-slow">
+                            <span class="text-4xl">📖</span>
+                        </div>
+                        <div class="absolute top-1/2 -right-8 bg-vermelho-escolar p-4 rounded-full border-4 border-white sombra-media float-reverse">
+                            <span class="text-3xl">🎯</span>
+                        </div>
+                        <div class="absolute bottom-1/4 -left-8 bg-azul-escolar p-4 rounded-full border-4 border-white sombra-media float-animation">
+                            <span class="text-3xl">⭐</span>
+                        </div>
+                        
+                        <!-- Elementos flutuantes extras -->
+                        <div class="absolute top-10 left-10 bg-white p-3 rounded-full border-2 border-azul-escolar sombra-suave float-slow">
+                            <span class="text-2xl">📐</span>
+                        </div>
+                        <div class="absolute top-20 right-20 bg-white p-3 rounded-full border-2 border-verde-escolar sombra-suave float-reverse">
+                            <span class="text-2xl">🖍️</span>
+                        </div>
+                        <div class="absolute bottom-20 left-20 bg-white p-3 rounded-full border-2 border-amarelo-escolar sombra-suave float-animation">
+                            <span class="text-2xl">📏</span>
+                        </div>
+                        <div class="absolute bottom-32 right-16 bg-white p-3 rounded-full border-2 border-vermelho-escolar sombra-suave float-slow">
+                            <span class="text-2xl">✂️</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Quadro de destaque -->
+                    <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white p-4 rounded-xl border-4 border-azul-escolar sombra-media w-64">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-azul-escolar">🏆 Aprovado</div>
+                            <div class="text-sm text-gray-700 font-semibold">por 100+ famílias</div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Sobre Nós -->
+    <section id="sobre" class="py-16 relative">
+        <!-- Quadro negro como fundo -->
+        <div class="quadro-negro py-16">
+            <div class="max-w-6xl mx-auto px-4">
+                
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl md:text-5xl font-bold texto-giz mb-4">
+                        Por que escolher a KM Reforço & Apoio?
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                        Oferecemos um ambiente acolhedor e metodologia eficaz
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <div class="papel-caderno p-6 rounded-xl text-center border-4 border-azul-escolar">
+                        <div class="w-16 h-16 bg-azul-escolar rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white">
+                            <span class="text-3xl">👥</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Turmas Pequenas</h3>
+                        <p class="text-gray-700 text-sm">Máximo 5 alunos por turma</p>
+                    </div>
+                    
+                    <div class="papel-caderno p-6 rounded-xl text-center border-4 border-verde-escolar">
+                        <div class="w-16 h-16 bg-verde-escolar rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white">
+                            <span class="text-3xl">🎓</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Professores Qualificados</h3>
+                        <p class="text-gray-700 text-sm">Especialistas em educação</p>
+                    </div>
+                    
+                    <div class="papel-caderno p-6 rounded-xl text-center border-4 border-amarelo-escolar">
+                        <div class="w-16 h-16 bg-amarelo-escolar rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white">
+                            <span class="text-3xl">💙</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Atendimento TEA/TDAH</h3>
+                        <p class="text-gray-700 text-sm">Metodologia adaptada</p>
+                    </div>
+                    
+                    <div class="papel-caderno p-6 rounded-xl text-center border-4 border-vermelho-escolar">
+                        <div class="w-16 h-16 bg-vermelho-escolar rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white">
+                            <span class="text-3xl">📈</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Resultados Comprovados</h3>
+                        <p class="text-gray-700 text-sm">Relatórios de progresso</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Serviços -->
+    <section id="servicos" class="py-16 relative">
+        <!-- Imagem de fundo de sala de aula -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1920&q=80" 
+                 alt="Sala de aula" 
+                 class="w-full h-full object-cover opacity-70">
+        </div>
+        
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            
+            <div class="text-center mb-12 papel-caderno p-8 rounded-xl inline-block mx-auto sombra-media bg-white/95">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                    📚 Nossos Serviços
+                </h2>
+                <p class="text-lg text-gray-700">
+                    Soluções completas para o desenvolvimento acadêmico
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Serviço 1 -->
+                <div class="papel-caderno rounded-xl overflow-hidden sombra-media border-4 border-azul-escolar bg-white/95">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&q=80" 
+                             alt="Acompanhamento escolar" 
+                             class="w-full h-48 object-cover">
+                        <div class="absolute top-4 right-4 bg-azul-escolar text-white px-4 py-2 rounded-full text-sm font-bold border-2 border-white">
+                            1º ao 5º ano
+                        </div>
+                    </div>
+                    <div class="p-6 caderno-pautado">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">📖 Acompanhamento Escolar</h3>
+                        <p class="text-gray-700 mb-4">
+                            Auxílio nas tarefas, preparação para provas e reforço de conteúdos.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-700 font-semibold">
+                            <li>✓ Todas as disciplinas</li>
+                            <li>✓ Material didático incluso</li>
+                            <li>✓ Acompanhamento semanal</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Serviço 2 -->
+                <div class="papel-caderno rounded-xl overflow-hidden sombra-media border-4 border-verde-escolar bg-white/95">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=600&q=80" 
+                             alt="Revisão de conteúdos" 
+                             class="w-full h-48 object-cover">
+                        <div class="absolute top-4 right-4 bg-verde-escolar text-white px-4 py-2 rounded-full text-sm font-bold border-2 border-white">
+                            Semanal
+                        </div>
+                    </div>
+                    <div class="p-6 caderno-pautado">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">🔄 Revisão de Conteúdos</h3>
+                        <p class="text-gray-700 mb-4">
+                            Revisões periódicas para fixação do aprendizado.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-700 font-semibold">
+                            <li>✓ Exercícios práticos</li>
+                            <li>✓ Simulados e testes</li>
+                            <li>✓ Feedback detalhado</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Serviço 3 -->
+                <div class="papel-caderno rounded-xl overflow-hidden sombra-media border-4 border-amarelo-escolar bg-white/95">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80" 
+                             alt="Foco nas dificuldades" 
+                             class="w-full h-48 object-cover">
+                        <div class="absolute top-4 right-4 bg-amarelo-escolar text-white px-4 py-2 rounded-full text-sm font-bold border-2 border-white">
+                            Personalizado
+                        </div>
+                    </div>
+                    <div class="p-6 caderno-pautado">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">🎯 Foco nas Dificuldades</h3>
+                        <p class="text-gray-700 mb-4">
+                            Trabalho específico nas áreas com maior dificuldade.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-700 font-semibold">
+                            <li>✓ Diagnóstico individual</li>
+                            <li>✓ Plano personalizado</li>
+                            <li>✓ Acompanhamento próximo</li>
+                        </ul>
+                    </div>
+                </div>
+
+                
+                <!-- Serviço 4 -->
+                <div class="bg-white rounded-xl overflow-hidden sombra-media">
+                    <img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=600&q=80" 
+                         alt="Atendimento especializado" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="inline-block bg-vermelho-escolar text-white px-3 py-1 rounded-full text-xs font-semibold mb-3">
+                            TEA/TDAH
+                        </span>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Atendimento Especializado</h3>
+                        <p class="text-gray-600 mb-4">
+                            Metodologia adaptada para necessidades especiais.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>✓ Professores especializados</li>
+                            <li>✓ Ambiente adaptado</li>
+                            <li>✓ Materiais sensoriais</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Serviço 5 -->
+                <div class="bg-white rounded-xl overflow-hidden sombra-media">
+                    <img src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=600&q=80" 
+                         alt="Aprendizado lúdico" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="inline-block bg-azul-escolar text-white px-3 py-1 rounded-full text-xs font-semibold mb-3">
+                            Lúdico
+                        </span>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Aprendizado Lúdico</h3>
+                        <p class="text-gray-600 mb-4">
+                            Jogos educativos que tornam o aprendizado divertido.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>✓ Jogos pedagógicos</li>
+                            <li>✓ Atividades criativas</li>
+                            <li>✓ Aprender brincando</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Serviço 6 -->
+                <div class="bg-white rounded-xl overflow-hidden sombra-media">
+                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80" 
+                         alt="Material didático" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="inline-block bg-verde-escolar text-white px-3 py-1 rounded-full text-xs font-semibold mb-3">
+                            Completo
+                        </span>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Material Didático</h3>
+                        <p class="text-gray-600 mb-4">
+                            Livros e recursos educacionais de qualidade inclusos.
+                        </p>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li>✓ Livros atualizados</li>
+                            <li>✓ Apostilas exclusivas</li>
+                            <li>✓ Recursos digitais</li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Depoimentos em formato de Chat -->
+    <section id="depoimentos" class="py-16 bg-gradient-to-b from-white to-gray-50">
+        <div class="max-w-4xl mx-auto px-4">
+            
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    💬 O que os pais dizem
+                </h2>
+                <p class="text-lg text-gray-600">
+                    Conversas reais de famílias satisfeitas
+                </p>
+            </div>
+            
+            <!-- Container estilo WhatsApp -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-4 border-verde-escolar">
+                
+                <!-- Cabeçalho estilo WhatsApp -->
+                <div class="bg-verde-escolar text-white p-4 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=100&q=80" alt="Logo" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="font-bold">Depoimentos KM Reforço</h3>
+                        <p class="text-xs opacity-90">Mensagens de pais satisfeitos</p>
+                    </div>
+                </div>
+                
+                <!-- Área de mensagens -->
+                <div class="p-6 space-y-6 bg-gray-50" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" viewBox=\"0 0 100 100\"><rect fill=\"%23f3f4f6\" width=\"100\" height=\"100\"/><circle fill=\"%23e5e7eb\" cx=\"10\" cy=\"10\" r=\"1.5\"/><circle fill=\"%23e5e7eb\" cx=\"30\" cy=\"30\" r=\"1.5\"/><circle fill=\"%23e5e7eb\" cx=\"50\" cy=\"50\" r=\"1.5\"/><circle fill=\"%23e5e7eb\" cx=\"70\" cy=\"70\" r=\"1.5\"/><circle fill=\"%23e5e7eb\" cx=\"90\" cy=\"90\" r=\"1.5\"/></svg>');">
+                    
+                    <!-- Mensagem 1 - Ana Paula -->
+                    <div class="flex items-start gap-3">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80" 
+                             alt="Ana Paula" 
+                             class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md flex-shrink-0">
+                        <div class="flex-1">
+                            <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-md border border-gray-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h4 class="font-bold text-gray-900">Ana Paula</h4>
+                                    <span class="text-xs text-gray-500">• Mãe do Lucas (7 anos)</span>
+                                </div>
+                                <p class="text-gray-700 leading-relaxed">
+                                    O Lucas melhorou muito em matemática! 📊 Os professores são atenciosos e o ambiente é acolhedor. Recomendo! ⭐⭐⭐⭐⭐
+                                </p>
+                                <p class="text-xs text-gray-400 mt-2">Hoje às 10:30</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mensagem 2 - Roberto Silva -->
+                    <div class="flex items-start gap-3">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80" 
+                             alt="Roberto Silva" 
+                             class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md flex-shrink-0">
+                        <div class="flex-1">
+                            <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-md border border-gray-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h4 class="font-bold text-gray-900">Roberto Silva</h4>
+                                    <span class="text-xs text-gray-500">• Pai da Sofia (9 anos)</span>
+                                </div>
+                                <p class="text-gray-700 leading-relaxed">
+                                    A Sofia tem TDAH e o atendimento especializado fez toda diferença! 💙 Ela está mais focada e confiante. Muito obrigado! 🙏 ⭐⭐⭐⭐⭐
+                                </p>
+                                <p class="text-xs text-gray-400 mt-2">Hoje às 11:15</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mensagem 3 - Mariana Costa -->
+                    <div class="flex items-start gap-3">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" 
+                             alt="Mariana Costa" 
+                             class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md flex-shrink-0">
+                        <div class="flex-1">
+                            <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-md border border-gray-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <h4 class="font-bold text-gray-900">Mariana Costa</h4>
+                                    <span class="text-xs text-gray-500">• Mãe do Gabriel (6 anos)</span>
+                                </div>
+                                <p class="text-gray-700 leading-relaxed">
+                                    O Gabriel estava com dificuldade na alfabetização. 📖 Hoje ele lê sozinho e adora as aulas! Profissionais excelentes! 👏 ⭐⭐⭐⭐⭐
+                                </p>
+                                <p class="text-xs text-gray-400 mt-2">Hoje às 14:20</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mensagem de Call-to-Action -->
+                    <div class="flex justify-center pt-4">
+                        <div class="bg-azul-escolar text-white p-4 rounded-2xl shadow-lg text-center max-w-md">
+                            <p class="font-bold mb-2">✨ Quer resultados como esses?</p>
+                            <p class="text-sm mb-4">Agende uma aula experimental gratuita!</p>
+                            <a href="contato.html" class="inline-block bg-white text-azul-escolar px-6 py-2 rounded-lg font-bold hover:bg-gray-100 transition-all">
+                                📅 Agendar Agora
+                            </a>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+
+    
+    <!-- Rodapé -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-4xl">📚</span>
+                        <div>
+                            <h3 class="text-2xl font-bold">KM Reforço & Apoio</h3>
+                            <p class="text-gray-400 text-sm">Educação que Transforma</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400">
+                        Reforço escolar especializado do 1º ao 5º ano do Ensino Fundamental, 
+                        com atendimento personalizado e suporte para alunos com TEA e TDAH.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-lg mb-4">Contato</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>📍 R. Inácio Guimarães - Educandos, Manaus, AM</li>
+                        <li>📱 WhatsApp: +55 92 8602-9424</li>
+                        <li>🕐 Terça a Sexta: 15h00 às 18h00 | <span id="statusHorario" class="font-bold"></span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 KM Reforço & Apoio. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Chat Widget -->
+    <div id="chatWidget" class="fixed bottom-6 right-6 z-50">
+        <!-- Botão do Chat -->
+        <button id="chatButton" class="bg-verde-escolar text-white w-16 h-16 rounded-full shadow-lg hover:bg-green-700 flex items-center justify-center transition-all duration-300 hover:scale-110">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </button>
+        
+        <!-- Janela do Chat -->
+        <div id="chatWindow" class="hidden absolute bottom-20 right-0 w-96 bg-white rounded-2xl shadow-2xl overflow-hidden border-4 border-azul-escolar">
+            <!-- Cabeçalho do Chat -->
+            <div class="bg-azul-escolar text-white p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=100&q=80" alt="Logo" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="font-bold">KM Reforço & Apoio</h3>
+                        <p class="text-xs opacity-90" id="chatStatus">Online</p>
+                    </div>
+                </div>
+                <button id="closeChat" class="text-white hover:bg-blue-800 rounded-full p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mensagens do Chat -->
+            <div id="chatMessages" class="h-96 overflow-y-auto p-4 bg-gray-50 space-y-3">
+                <!-- Mensagens serão adicionadas aqui -->
+            </div>
+            
+            <!-- Opções Rápidas -->
+            <div id="quickOptions" class="p-3 bg-white border-t border-gray-200">
+                <p class="text-xs text-gray-600 mb-2 font-semibold">Escolha uma opção:</p>
+                <div class="space-y-2">
+                    <button class="quick-option w-full text-left px-3 py-2 bg-blue-50 hover:bg-blue-100 rounded-lg text-sm font-medium text-azul-escolar border border-azul-escolar" data-option="horarios">
+                        🕐 Horários de Atendimento
+                    </button>
+                    <button class="quick-option w-full text-left px-3 py-2 bg-blue-50 hover:bg-blue-100 rounded-lg text-sm font-medium text-azul-escolar border border-azul-escolar" data-option="precos">
+                        💰 Valores e Planos
+                    </button>
+                    <button class="quick-option w-full text-left px-3 py-2 bg-blue-50 hover:bg-blue-100 rounded-lg text-sm font-medium text-azul-escolar border border-azul-escolar" data-option="series">
+                        📚 Séries Atendidas
+                    </button>
+                    <button class="quick-option w-full text-left px-3 py-2 bg-blue-50 hover:bg-blue-100 rounded-lg text-sm font-medium text-azul-escolar border border-azul-escolar" data-option="localizacao">
+                        📍 Localização
+                    </button>
+                    <button class="quick-option w-full text-left px-3 py-2 bg-green-50 hover:bg-green-100 rounded-lg text-sm font-medium text-verde-escolar border border-verde-escolar" data-option="whatsapp">
+                        💬 Falar com Atendente
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Input de Mensagem -->
+            <div class="p-3 bg-white border-t border-gray-200">
+                <div class="flex gap-2">
+                    <input type="text" id="chatInput" placeholder="Digite sua mensagem..." class="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-azul-escolar focus:border-azul-escolar text-sm">
+                    <button id="sendMessage" class="bg-azul-escolar text-white px-4 py-2 rounded-lg hover:bg-blue-800 font-semibold">
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        // Inicializar ícones Lucide
+        lucide.createIcons();
+        
+        // ===== MENU MOBILE =====
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Fechar menu ao clicar em um link
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        
+        // ===== CHAT FUNCIONAL =====
+        const chatButton = document.getElementById('chatButton');
+        const chatWindow = document.getElementById('chatWindow');
+        const closeChat = document.getElementById('closeChat');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendMessage = document.getElementById('sendMessage');
+        const quickOptions = document.querySelectorAll('.quick-option');
+        
+        // Abrir/Fechar Chat
+        chatButton.addEventListener('click', () => {
+            chatWindow.classList.toggle('hidden');
+            if (!chatWindow.classList.contains('hidden')) {
+                // Mensagem de boas-vindas
+                if (chatMessages.children.length === 0) {
+                    addBotMessage('Olá! 👋 Bem-vindo ao KM Reforço & Apoio! Como posso ajudar você hoje?');
+                }
+            }
+        });
+        
+        closeChat.addEventListener('click', () => {
+            chatWindow.classList.add('hidden');
+        });
+        
+        // Adicionar mensagem do bot
+        function addBotMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start gap-2';
+            messageDiv.innerHTML = `
+                <div class="w-8 h-8 bg-azul-escolar rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=100&q=80" alt="Bot" class="w-full h-full object-cover">
+                </div>
+                <div class="bg-white p-3 rounded-lg shadow-sm max-w-xs border border-gray-200">
+                    <p class="text-sm text-gray-800">${message}</p>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Adicionar mensagem do usuário
+        function addUserMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex items-start gap-2 justify-end';
+            messageDiv.innerHTML = `
+                <div class="bg-azul-escolar p-3 rounded-lg shadow-sm max-w-xs">
+                    <p class="text-sm text-white">${message}</p>
+                </div>
+                <div class="w-8 h-8 bg-verde-escolar rounded-full flex items-center justify-center flex-shrink-0">
+                    <span class="text-white text-sm">👤</span>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Respostas automáticas
+        const respostasBot = {
+            'horarios': 'Nosso horário de atendimento é:\n\n📅 Terça a Sexta\n🕐 15h00 às 18h00\n\nEstamos prontos para receber seu filho!',
+            'precos': 'Nossos valores são personalizados de acordo com a necessidade de cada aluno.\n\n💰 Entre em contato para um orçamento:\n📱 WhatsApp: (92) 8602-9424\n\nTemos planos mensais e pacotes especiais!',
+            'series': 'Atendemos alunos do:\n\n📚 1º ao 5º ano do Ensino Fundamental\n\n✨ Especialidades:\n• Reforço escolar\n• Acompanhamento de tarefas\n• Preparação para provas\n• Atendimento TEA/TDAH',
+            'localizacao': 'Estamos localizados em:\n\n📍 R. Inácio Guimarães - Educandos\nManaus, AM\n\nVenha nos visitar! Agende uma visita pelo WhatsApp: (92) 8602-9424',
+            'whatsapp': 'Vou te direcionar para nosso WhatsApp! 💬\n\nClique no botão abaixo para falar diretamente com nossa equipe:'
+        };
+        
+        // Opções rápidas
+        quickOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const optionType = option.dataset.option;
+                const optionText = option.textContent.trim();
+                
+                addUserMessage(optionText);
+                
+                setTimeout(() => {
+                    if (optionType === 'whatsapp') {
+                        addBotMessage(respostasBot[optionType]);
+                        setTimeout(() => {
+                            const whatsappDiv = document.createElement('div');
+                            whatsappDiv.className = 'flex justify-center mt-3';
+                            whatsappDiv.innerHTML = `
+                                <a href="https://wa.me/5592860294424" 
+                                   target="_blank"
+                                   class="bg-verde-escolar text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 flex items-center gap-2">
+                                    <span>💬</span>
+                                    <span>Abrir WhatsApp</span>
+                                </a>
+                            `;
+                            chatMessages.appendChild(whatsappDiv);
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }, 500);
+                    } else {
+                        addBotMessage(respostasBot[optionType]);
+                    }
+                }, 500);
+            });
+        });
+        
+        // Enviar mensagem personalizada
+        function enviarMensagem() {
+            const message = chatInput.value.trim();
+            if (message) {
+                addUserMessage(message);
+                chatInput.value = '';
+                
+                setTimeout(() => {
+                    // Resposta inteligente baseada em palavras-chave
+                    const messageLower = message.toLowerCase();
+                    
+                    if (messageLower.includes('horário') || messageLower.includes('horario') || messageLower.includes('hora')) {
+                        addBotMessage(respostasBot['horarios']);
+                    } else if (messageLower.includes('preço') || messageLower.includes('preco') || messageLower.includes('valor') || messageLower.includes('quanto custa')) {
+                        addBotMessage(respostasBot['precos']);
+                    } else if (messageLower.includes('série') || messageLower.includes('serie') || messageLower.includes('ano') || messageLower.includes('atende')) {
+                        addBotMessage(respostasBot['series']);
+                    } else if (messageLower.includes('onde') || messageLower.includes('endereço') || messageLower.includes('endereco') || messageLower.includes('localização')) {
+                        addBotMessage(respostasBot['localizacao']);
+                    } else {
+                        addBotMessage('Obrigado pela sua mensagem! 😊\n\nPara um atendimento mais rápido e personalizado, recomendo usar as opções rápidas acima ou falar diretamente com nossa equipe pelo WhatsApp: (92) 8602-9424');
+                    }
+                }, 800);
+            }
+        }
+        
+        sendMessage.addEventListener('click', enviarMensagem);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                enviarMensagem();
+            }
+        });
+        
+        // Verificar status de horário (Aberto/Fechado)
+        function verificarHorario() {
+            const agora = new Date();
+            const diaSemana = agora.getDay();
+            const hora = agora.getHours();
+            const minutos = agora.getMinutes();
+            const horaAtual = hora + minutos / 60;
+            
+            const statusElement = document.getElementById('statusHorario');
+            const chatStatus = document.getElementById('chatStatus');
+            
+            if (diaSemana >= 2 && diaSemana <= 5 && horaAtual >= 15 && horaAtual < 18) {
+                statusElement.textContent = '🟢 ABERTO';
+                statusElement.className = 'font-bold text-green-600';
+                chatStatus.textContent = '🟢 Online';
+            } else {
+                statusElement.textContent = '🔴 FECHADO';
+                statusElement.className = 'font-bold text-red-600';
+                chatStatus.textContent = '🔴 Offline';
+            }
+        }
+        
+        verificarHorario();
+        setInterval(verificarHorario, 60000);
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // ===== TELA DE CARREGAMENTO =====
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            // Aguardar um pouco para garantir que tudo carregou
+            setTimeout(() => {
+                loadingScreen.classList.add('fade-out');
+                // Remover do DOM após a animação
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 800);
+        });
+    </script>
+</body>
+</html>
